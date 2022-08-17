@@ -949,7 +949,7 @@ else
 ?>
 	</style>
   <link rel="stylesheet" type="text/css" media="screen" href="editor-resources/oldeditor.css" />
-<script src="vendor/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="vendor/jquery.min.js" type="text/javascript"></script>
 <script src="editor-resources/editor.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	
