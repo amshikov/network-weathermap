@@ -232,7 +232,7 @@ a.dlgTitlebar:hover {
 }
 
 .dlgProperties {
-    width: 600px;
+    width: 800px;
     background: #077;
     margin: 5px;
     font-size: 8pt;
@@ -315,5 +315,5 @@ td { color: white; font-weight: normal; text-align: left; font-size: 8pt;}
 
 .cactilink, .cactinode { white-space: nowrap; }
 
-#item_configtext { overflow: scroll; white-space: nowrap; }
+#item_configtext { overflow: scroll; white-space: pre-wrap; }
 
