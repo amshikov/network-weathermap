@@ -1708,16 +1708,16 @@ class WeatherMap extends WeatherMapBase
     {
         // add a timestamp to the corner, so we can tell if it's all being updated
         # $datestring = "Created: ".date("M d Y H:i:s",time());
-        # $this->datestamp=strftime($this->stamptext, time());
+        # $this->datestamp=wm_strftime($this->stamptext, time());
 
         switch ($which) {
             case "MIN":
-                $stamp = strftime($this->minstamptext, $this->min_data_time);
+                $stamp = wm_strftime($this->minstamptext, $this->min_data_time);
                 $pos_x = $this->mintimex;
                 $pos_y = $this->mintimey;
                 break;
             case "MAX":
-                $stamp = strftime($this->maxstamptext, $this->max_data_time);
+                $stamp = wm_strftime($this->maxstamptext, $this->max_data_time);
                 $pos_x = $this->maxtimex;
                 $pos_y = $this->maxtimey;
                 break;
@@ -3279,7 +3279,7 @@ class WeatherMap extends WeatherMapBase
         } else {
             $maptime = time();
         }
-        $this->datestamp = strftime($this->stamptext, $maptime);
+        $this->datestamp = wm_strftime($this->stamptext, $maptime);
 
         // do the basic prep work
         if ($this->background != '') {

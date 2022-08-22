@@ -120,6 +120,122 @@ function wm_warn($string,$notice_only=FALSE)
 	}
 }
 
+// strftime is deprecated since PHP 8.0
+function wm_strftime($format, $date) {
+    $dt = new DateTime('@' . $date);
+    $dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+    $format = preg_replace( [
+	'/\%A/',	// national representation of the full weekday name
+	'/\%a/',	// national representation of the abbreviated weekday name
+	'/\%B/',	// national representation of the full month name
+	'/\%b/',	// national representation of the abbreviated month name
+	'/\%C/',	// (year / 100) as decimal number; single digits are preceded by a zero.
+	'/\%c/',	// national representation of time and date
+	'/\%D/',	// equivalent to "%m/%d/%y"
+	'/\%d/',	// the day of the month as a decimal number (01-31)
+	'/\%e/',	// the day of the month as a decimal number (1-31); single digits are preceded by a blank.
+	'/\%F/',	// equivalent to "%Y-%m-%d"
+	'/\%G/',	// a year as a decimal number with century.  This year
+			// is the one that contains the greater part of the week (Monday as
+			// the first day of the week)
+	'/\%g/',	// the same year as in “%G”, but as a decimal numwithout century (00
+	'/\%H/',	// the hour (24-hour clock) as a decimal number (00-23)
+	'/\%h/',	// the same as %b
+	'/\%I/',	// the hour (12-hour clock) as a decimal number (01-12)
+	'/\%j/',	// the day of the year as a decimal number (001-366)
+	'/\%k/',	// the hour (24-hour clock) as a decimal number (0-23); single digits are preceded by a blank
+	'/\%l/',	// the hour (12-hour clock) as a decimal number (1-12); single digits are preceded by a blank
+	'/\%M/',	// the minute as a decimal number (00-59)
+	'/\%m/',	// the month as a decimal number (01-12)
+	'/\%n/',	// a newline
+	'/\%p/',	// national representation of either "ante meridiem" (AM) or "post meridiem" (PM)
+	'/\%R/',	// equivalent to "%H:%M"
+	'/\%r/',	// equivalent to "%I:%M:%S %p"
+	'/\%S/',	// the second as a decimal number (00-60)
+	'/\%s/',	// the number of seconds since the Epoch, UTC
+	'/\%T/',	// equivalent to "%H:%M:%S"
+	'/\%t/',	// a tab
+	'/\%U/',	// have to be the week number of the year with Sunday as the first day of the week) as a decimal number (00-53)
+			// but currently is the same as %V
+	'/\%u/',	// the weekday (Monday as the first day of the week) as a decimal number (1-7).
+	'/\%V/',	// the week number of the year (Monday as the first day
+			// of the week) as a decimal number (01-53).  If the week containing
+			// January 1 has four or more days in the new year, then it is week 1;
+			// otherwise it is the last week of the previous year, and the next
+			// week is week 1.
+	'/\%v/',	// equivalent to "%e-%b-%Y"
+	'/\%W/',	// have to be the week number of the year (Monday as the first day of the week) as a decimal number (00-53)
+			// but currently is the same as %V
+	'/\%w/',	// have to be the weekday with Sunday as the first day of the week as a decimal number (0-6)
+	'/\%X/',	// have to be national representation of the time, currently is the same as "%T"
+	'/\%x/',	// have to be national representation of the date, currently is the same as "%d/%m/%Y"
+			// but currently is the same as %u
+	'/\%Y/',	// the year with century as a decimal number
+	'/\%y/',	// the year without century as a decimal number
+	'/\%Z/',	// the time zone name
+	'/\%z/',	// the time zone offset from UTC
+			// a leading plus sign stands for east of UTC, a minus sign for west of UTC, hours and
+			// minutes follow with two digits each and no delimiter between them
+			// (common form for RFC 822 date headers)
+	'/\%\+/',       // have to be national representation of the date and time (the
+			// format is similar to that produced by date(1))
+			// but currently is date formatted in RFC222/RFC5322
+	'/\%\%/',       // % character
+    ],[
+	$dt->format('l'),				// %A
+	$dt->format('D'),				// %a
+	$dt->format('F'),				// %B
+	$dt->format('M'),				// %b
+	sprintf("%02d", intval($dt->format('Y')/100)),	// %C
+	$dt->format('r'),				// %c
+	$dt->format('d/m/y'),				// %D
+	$dt->format('d'),				// %d
+	sprintf("%2s", $dt->format('j')),		// %e
+	$dt->format('Y-m-d'),				// %F
+	$dt->format('o'),				// %G
+	sprintf("%02d", fmod($dt->format('o'), 100)),	// %g
+	$dt->format('H'),				// %H
+	$dt->format('M'),				// %h
+	$dt->format('h'),				// %I
+	sprintf("%03d", $dt->format('z')+1),		// %j
+	sprintf("%2s", $dt->format('G')),		// %k
+	sprintf("%2s", $dt->format('g')),		// %l
+	$dt->format('i'),				// %M
+	$dt->format('m'),				// %m
+	"\n",						// %n
+	$dt->format('A'),				// %p
+	$dt->format('H:i'),				// %R
+	$dt->format('h:i:s A'),				// %r
+	$dt->format('s'),				// %S
+	$dt->format('U'),				// %s
+	$dt->format('H:i:s'),				// %T
+	"\t",						// %t
+	sprintf("%02d", $dt->format('W')),		// %U
+	$dt->format('N'),				// %u
+	sprintf("%02d", $dt->format('W')),		// %V
+	sprintf("%2s-%s-%s",
+	    $dt->format('j'),
+	    $dt->format('M'),
+	    $dt->format('Y')),				// %v
+	sprintf("%02d", $dt->format('W')),		// %W
+	$dt->format('N'),				// %w
+	$dt->format('H:i:s'),				// %X
+	$dt->format('d/m/Y'),				// %x
+	$dt->format('Y'),				// %Y
+	$dt->format('y'),				// %y
+	$dt->format('T'),				// %Z
+	sprintf("%s%02d%02d",
+	    $dt->format('Z') < 0 ? "-" : "+",
+	    $dt->format('Z') / 3600,
+	    fmod($dt->format('Z'), 3600)),		// %z
+	$dt->format('r'),				// %+
+	'%'						// %%
+    ],
+    $format);
+
+    return $format;
+}
+
 function js_escape($str, $wrap=TRUE)
 {
 	$str=str_replace('\\', '\\\\', $str);
