@@ -498,7 +498,7 @@ class WeatherMap extends WeatherMapBase
         }
 
         if (($fontnumber > 0) && ($fontnumber < 6)) {
-            imagestring($image, $fontnumber, $x, $y - imagefontheight($fontnumber), $string, $colour);
+            imagestring($image, $fontnumber, ceil($x), ceil($y - imagefontheight($fontnumber)), $string, $colour);
             if ($angle != 0) {
                 wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN02]\n");
             }

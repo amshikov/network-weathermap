@@ -2133,7 +2133,7 @@ function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string)
 
 	metadump("TEXT $x $y $angle $size $file $r $g $b $a $string");
 
-	return(imagettftext($image, $size, $angle, $x, $y, $color, $file, $string));
+	return(imagettftext($image, $size, $angle, ceil($x), ceil($y), $color, $file, $string));
 }
 
 function wm_draw_marker_diamond($im, $col, $x, $y, $size=10)
@@ -2180,7 +2180,7 @@ function wm_draw_marker_box($im, $col, $x, $y, $size=10)
 
 function wm_draw_marker_circle($im, $col, $x, $y, $size=10)
 {
-	imagearc($im,$x, $y ,$size,$size,0,360,$col);
+	imagearc($im,ceil($x), ceil($y) ,$size,$size,0,360,$col);
 }
 
 function draw_spine_chain($im,$spine,$col, $size=10)
@@ -2189,7 +2189,7 @@ function draw_spine_chain($im,$spine,$col, $size=10)
 
     for ($i=0; $i < $newn; $i++)
     {
-		imagearc($im,$spine[$i][X],$spine[$i][Y],$size,$size,0,360,$col);
+		imagearc($im,ceil($spine[$i][X]),ceil($spine[$i][Y]),$size,$size,0,360,$col);
     }
 }
 
@@ -2210,8 +2210,8 @@ function draw_spine($im, $spine,$col)
     for ($i=0; $i <$max_i; $i++)
     {
         imageline($im,
-                    $spine[$i][X],$spine[$i][Y],
-                    $spine[$i+1][X],$spine[$i+1][Y],
+                    ceil($spine[$i][X]),ceil($spine[$i][Y]),
+                    ceil($spine[$i+1][X]),ceil($spine[$i+1][Y]),
                     $col
                     );
     }
