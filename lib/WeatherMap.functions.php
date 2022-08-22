@@ -977,8 +977,8 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 	$marker_purple = imagecolorallocate($image, 255,0,255);
 	$marker_cyan = imagecolorallocate($image, 0,255,255);
 
-	draw_spine($image, $curvepoints, $marker_grey);
-	draw_spine_chain($image, $curvepoints, $marker_grey);
+#	draw_spine($image, $curvepoints, $marker_grey);
+#	draw_spine_chain($image, $curvepoints, $marker_grey);
 
 	if($unidirectional)
 	{
@@ -1002,7 +1002,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 	    list($halfway_x,$halfway_y,$halfwayindex) = find_distance_coords($curvepoints,$halfway);
 	#    print "Midpoint is: $totaldistance  $halfway  $halfwayindex   $halfway_x,$halfway_y\n";
 
-        wm_draw_marker_diamond($image, $marker_red, $halfway_x,$halfway_y);
+#        wm_draw_marker_diamond($image, $marker_red, $halfway_x,$halfway_y);
 
 	    $spine[OUT] = array();
 	    $spine[IN] = array();
@@ -1030,8 +1030,8 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 	// now we have two seperate spines, with distances, so that the arrowhead is the end of each.
 	// (or one, if it's unidir)
 
-    draw_spine_chain($image, $spine[IN], $marker_green, 5);
-//    draw_spine_chain($image, $spine[OUT], $marker3, 20);
+#    draw_spine_chain($image, $spine[IN], $marker_green, 5);
+#    draw_spine_chain($image, $spine[OUT], $marker3, 20);
 
 	// so we can loop along the spine for each one as a seperate entity
 
@@ -1075,11 +1075,11 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 			# wm_draw_marker_diamond($image, $map->selected, $pre_mid_x, $pre_mid_y, 5);
 			# imagearc($image,$pre_mid_x, $pre_mid_y ,15,15,0,360,$map->selected);
 
-            wm_draw_marker_diamond($image, $marker_purple, $spine[$dir][$pre_midindex+1][X],$spine[$dir][$pre_midindex+1][Y]);
-            wm_draw_marker_diamond($image, $marker_purple, $spine[$dir][$pre_midindex][X],$spine[$dir][$pre_midindex][Y]);
+#            wm_draw_marker_diamond($image, $marker_purple, $spine[$dir][$pre_midindex+1][X],$spine[$dir][$pre_midindex+1][Y]);
+#            wm_draw_marker_diamond($image, $marker_purple, $spine[$dir][$pre_midindex][X],$spine[$dir][$pre_midindex][Y]);
 
-            wm_draw_marker_diamond($image, $marker_purple, $pre_mid_x,$pre_mid_y, 20);
-            wm_draw_marker_diamond($image, $marker_purple, $spine[$dir][$pre_midindex][X],$spine[$dir][$pre_midindex][Y]);
+#            wm_draw_marker_diamond($image, $marker_purple, $pre_mid_x,$pre_mid_y, 20);
+#            wm_draw_marker_diamond($image, $marker_purple, $spine[$dir][$pre_midindex][X],$spine[$dir][$pre_midindex][Y]);
 
 			# imagearc($image,$spine[$dir][$pre_midindex+1][X],$spine[$dir][$pre_midindex+1][Y],20,20,0,360,$map->selected);
 			# imagearc($image,$spine[$dir][$pre_midindex][X],$spine[$dir][$pre_midindex][Y],20,20,0,360,$map->selected);
@@ -1117,14 +1117,14 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 			$oldn = count($spine[$dir]);
 
             wm_debug("Simplified to $newn points from $oldn\n");
-            draw_spine($image,$simple,$marker_purple);
-            draw_spine_chain($image,$simple,$marker_purple, 3);
+#            draw_spine($image,$simple,$marker_purple);
+#            draw_spine_chain($image,$simple,$marker_purple, 3);
 
 			if ($newn <3) {
 			    linear_expand($spine[$dir]);
 			    $newnewn = count($spine[$dir]);
                 wm_debug("Expanded to $newnewn points\n");
-                draw_spine($image,$simple,$marker_cyan);
+#                draw_spine($image,$simple,$marker_cyan);
             }
 
 			# if($draw_skeleton) draw_spine_chain($im,$simple,$blue, 12);
@@ -1262,8 +1262,8 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 				}
 			}
 
-			wm_draw_marker_circle($image, $marker_purple, $finalpoints[count($finalpoints)-2], $finalpoints[count($finalpoints)-1]);
-			wm_draw_marker_circle($image, $marker_purple, $reversepoints[count($reversepoints)-2], $reversepoints[count($reversepoints)-1]);
+#			wm_draw_marker_circle($image, $marker_purple, $finalpoints[count($finalpoints)-2], $finalpoints[count($finalpoints)-1]);
+#			wm_draw_marker_circle($image, $marker_purple, $reversepoints[count($reversepoints)-2], $reversepoints[count($reversepoints)-1]);
 
 			// at this end, we add the arrowhead
 
@@ -1486,7 +1486,7 @@ function simplify_spine(&$input, $epsilon=1e-10)
     $c = count($input)-2;
     $skipped=0;
 
-    dump_spine($input);
+#    dump_spine($input);
 
     for($n=1; $n<=$c; $n++)
     {
@@ -1534,7 +1534,7 @@ function simplify_spine(&$input, $epsilon=1e-10)
     $y1 = $input[$c+1][Y];
     wm_debug("   Adding $x1,$y1 to the end");
 
-    dump_spine($output);
+#    dump_spine($output);
 
     return $output;
 }
