@@ -23,11 +23,21 @@ $randomdata=0;
 $dumpconfig='';
 $defines=array();
 
-// **************************************************************************************
-// THIS IS THE ONE LINE IN HERE YOU MIGHT HAVE TO CHANGE!
-$rrdtool="/usr/bin/rrdtool";
-// (on Windows, use / instead of \ in pathnames - c:/rrdtool/bin/rrdtool.exe for example)
-// **************************************************************************************
+// Try to locate rrdtool binary
+// For Windows replace value below manually for now
+$uname = php_uname("s");
+if ($uname === "Linux" || $uname === "FreeBSD" || $uname === "NetBSD" || $uname === "OpenBSD") {
+	$rrdtool = shell_exec('whereis -b rrdtool');
+	if ($rrdtool) {
+		$rrdtool = rtrim(explode(': ', $rrdtool)[1], "\n\r");
+	}
+} elseif ($uname === "Windows") {
+	// (on Windows, use / instead of \ in pathnames - c:/rrdtool/bin/rrdtool.exe for example)
+	$rrdtool = "c:/rrdtool/bin/rrdtool.exe";
+}
+if (! $rrdtool) {
+	$rrdtool = "/usr/bin/rrdtool";
+}
 
 // initialize object
 $cg=new Console_Getopt();
