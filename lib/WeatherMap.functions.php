@@ -262,7 +262,7 @@ function mysprintf($format, $value, $kilo = 1000)
 			// we don't really need the justification (pre-.) part...
 		}
 		wm_debug("KMGT formatting $value with $spec.\n");
-		$result = nice_scalar($value, $kilo, $places);
+		$result = nice_scalar((float)$value, $kilo, $places);
 		$output = preg_replace("/%" . $spec . "k/", $format, $result);
 	} elseif (preg_match('/%(-*)(\d*)([Tt])/', $format, $matches)) {
 		$spec = $matches [3];
