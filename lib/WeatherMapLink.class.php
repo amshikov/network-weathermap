@@ -47,7 +47,7 @@ class WeatherMapLink extends WeatherMapItem
 	var $commentfontcolour;
 	var $commentstyle;
 	var $bwfontcolour;
-	# var $incomment, $outcomment;
+	var $incomment, $outcomment;
 	var $comments = array();
 	var $bwlabelformats = array();
 	var $curvepoints;
@@ -99,8 +99,8 @@ class WeatherMapLink extends WeatherMapItem
 			# 'incolour'=>-1,'outcolour'=>-1,
 			'a_offset' => 'C',
 			'b_offset' => 'C',
-			#'incomment' => '',
-			#'outcomment' => '',
+			'incomment' => '',
+			'outcomment' => '',
 			'zorder' => 300,
 			'overlibcaption' => array('',''),
 			'max_bandwidth_in' => 100000000,
