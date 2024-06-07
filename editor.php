@@ -927,7 +927,7 @@ else
 	}
 
 	// get the list from the images/ folder too
-	$imlist = get_imagelist("images");
+	$imlist = get_imagelist([ "icons", "images" ]);
 	
 	$fontlist = array();
 	
