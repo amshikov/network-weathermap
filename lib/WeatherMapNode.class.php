@@ -41,6 +41,8 @@ class WeatherMapNode extends WeatherMapItem
 	var $cachefile;
 	var $usescale;
 	var $useiconscale;
+	var $aiconoutlinecolour,
+	    $aiconfillcolour;
 	var $scaletype, $iconscaletype;
 	var $inscalekey,$outscalekey;
 	var $inscaletag, $outscaletag;

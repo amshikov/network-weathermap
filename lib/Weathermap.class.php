@@ -272,6 +272,12 @@ class WeatherMap extends WeatherMapBase
     var $colourtable = array();
     var $warncount = 0;
 
+    var $numscales;
+    var $dumpconfig;
+    var $labelstyle;
+
+    var $fonts;
+    var $image;
 
     function __construct()
     {
