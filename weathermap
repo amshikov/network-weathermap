@@ -127,9 +127,11 @@ if (sizeof($gopts) > 0)
 			$weathermap_debugging=TRUE;
 			
 			// enable assertion handling
+			// assert_options is deprecated since php 8.3. TODO: replace this 
 			assert_options(ASSERT_ACTIVE, 1);
 			assert_options(ASSERT_WARNING, 0);
-			assert_options(ASSERT_QUIET_EVAL, 1);
+			// this option is unknown in PHP 8.2
+			// assert_options(ASSERT_QUIET_EVAL, 1);
 
 			// Set up the callback
 			assert_options(ASSERT_CALLBACK, 'my_assert_handler');
