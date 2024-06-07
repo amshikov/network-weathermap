@@ -246,6 +246,13 @@ function js_escape($str, $wrap=TRUE)
 	return ($str);
 }
 
+function html_escape($str, $wrap=TRUE)
+{
+        $str=str_replace('"', '&quot;', $str);
+        if($wrap) $str='"' . $str . '"';
+        return ($str);
+}
+
 function mysprintf($format, $value, $kilo = 1000)
 {
 	$output = "";

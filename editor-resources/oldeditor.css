@@ -53,6 +53,10 @@ body {
     left: 150px;
 }
 
+.input500 { 
+    width: 500px;
+}
+
 #dlgMapProperties {
     display: none;
     z-index: 1;

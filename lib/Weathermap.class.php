@@ -2274,10 +2274,11 @@ class WeatherMap extends WeatherMapBase
                 if (($last_seen == 'NODE' || $last_seen == 'LINK') && preg_match("/^\s*TARGET\s+(.*)\s*$/i", $buffer,
                         $matches)) {
                     $linematched++;
-                    # $targets=preg_split('/\s+/', $matches[1], -1, PREG_SPLIT_NO_EMPTY);
-                    $rawtargetlist = $matches[1] . " ";
 
                     if ($args[0] == 'TARGET') {
+			// Store raw target list. Is used in editor
+			$curobj->target = $matches[1];
+
                         // wipe any existing targets, otherwise things in the DEFAULT accumulate with the new ones
                         $curobj->targets = array();
                         array_shift($args); // take off the actual TARGET keyword
@@ -2353,8 +2354,8 @@ class WeatherMap extends WeatherMapBase
                         wm_warn("IN/OUTOVERLIBGRAPH make no sense for a NODE! [WMWARN42]\n");
                     } else {
                         if ($last_seen == 'LINK' || $last_seen == 'NODE') {
-
-                            $urls = preg_split('/\s+/', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
+			    $urls = str_getcsv($matches[2], " ");
+			    $urls = array_map(function ($a) { return (strpos($a, " ") != FALSE ) ? '"'. $a . '" ' : $a; }, $urls );
 
                             if ($matches[1] == 'IN') {
                                 $index = IN;
@@ -3696,7 +3697,7 @@ class WeatherMap extends WeatherMapBase
                                 if ($n > 0) {
                                     $overlibhtml .= '&lt;br /&gt;';
                                 }
-                                $overlibhtml .= "&lt;img $img_extra src=" . $this->ProcessString($url, $myobj) . "&gt;";
+				$overlibhtml .= "&lt;img $img_extra src=" . html_escape($this->ProcessString($url, $myobj), FALSE) . "&gt;";
                                 $n++;
                             }
                         }
