@@ -23,7 +23,7 @@ $WM_config_keywords2 = array();
 
 // don't produce debug output for these functions
 $weathermap_debug_suppress = array(
-    'processstring',
+//    'processstring',
     'mysprintf'
 );
 
@@ -583,7 +583,7 @@ class WeatherMap extends WeatherMapBase
 
     function ProcessString($input, &$context, $include_notes = true, $multiline = false)
     {
-        # debug("ProcessString: input is $input\n");
+        wm_debug("ProcessString: input is $input\n");
 
         assert('is_scalar($input)');
 
@@ -602,7 +602,6 @@ class WeatherMap extends WeatherMapBase
 
         $output = $input;
 
-        # while( preg_match("/(\{[^}]+\})/",$input,$matches) )
         while (preg_match('/(\{(?:node|map|link)[^}]+\})/', $input, $matches)) {
             $value = "[UNKNOWN]";
             $format = "";
@@ -612,7 +611,7 @@ class WeatherMap extends WeatherMapBase
             if (preg_match('/\{(node|map|link):([^}]+)\}/', $key, $matches)) {
                 $type = $matches[1];
                 $args = $matches[2];
-                # debug("ProcessString: type is ".$type.", arguments are ".$args."\n");
+                wm_debug("ProcessString: type is ".$type.", arguments are ".$args."\n");
 
                 if ($type == 'map') {
                     $the_item = $this;
@@ -623,12 +622,12 @@ class WeatherMap extends WeatherMapBase
                 }
 
                 if (($type == 'link') || ($type == 'node')) {
+		    wm_debug("ProcessString: working on args ".$args."\n");
                     if (preg_match("/([^:]+):([^:]+):*([^:]*)/", $args, $matches)) {
                         $itemname = $matches[1];
                         $args = $matches[2];
                         $format = $matches[3];
-
-                        #				debug("ProcessString: item is $itemname, and args are now $args\n");
+			wm_debug("ProcessString: item is $itemname, and args are now $args; and format is \"$format\"\n");
 
                         $the_item = null;
                         if (($itemname == "this") && ($type == strtolower($context->my_type()))) {
@@ -692,18 +691,37 @@ class WeatherMap extends WeatherMapBase
             }
             wm_debug("ProcessString: replacing " . $key . " with $value\n");
 
-            # if($format != '') $value = sprintf($format,$value);
             if ($format != '') {
-
-                #		debug("Formatting with mysprintf($format,$value)\n");
-                $value = mysprintf($format, $value, $this->kilo);
+		if ( preg_match('/^%/', $format) ) {
+		    # Format is simply for sprintf
+		    wm_debug("Formatting with mysprintf($format,$value)\n");
+		    $value = mysprintf($format,$value, $this->kilo);
+		} else {
+		    # Format is comma-separated list of modifiers
+		    wm_debug("Formatting $value with modifiers list: $format\n");
+		    $func_list = preg_replace('/^\s+|\s+$/', '', str_getcsv($format, ','));
+		    foreach ($func_list as $f) {
+			switch ($f) {
+			    case 'uc' :
+				$value = strtoupper($value);
+				wm_debug("Value changed to: $value by function: $f\n");
+				break;
+			    case 'lc' :
+				$value = strtolower($value);
+				wm_debug("Value changed to: $value by function: $f\n");
+				break;
+			    case (preg_match('/^\/([^\/]|\\/)+\/([^\/]|\\/)*\//', $f, $match) ? true : false) :
+				$value = preg_replace('/'.preg_quote($match[1], '/').'/', $match[2], $value);
+				wm_debug("Value changed to: $value by function: $f\n");
+				break;
+			}
+		    }
+		}
             }
-
-            #	debug("ProcessString: formatted to $value\n");
             $input = str_replace($key, '', $input);
             $output = str_replace($key, $value, $output);
         }
-        #debug("ProcessString: output is $output\n");
+	wm_debug("ProcessString: output is $output\n");
         return ($output);
     }
 
@@ -2276,7 +2294,7 @@ class WeatherMap extends WeatherMapBase
                             // 5 => the plugin to use to pull data
                             $newtarget = array('', '', $filename, $linecount, $arg, "", "");
                             if ($curobj) {
-                                wm_debug("  TARGET: $arg\n");
+                                wm_debug("  TARGET: $arg\n"); 
                                 $curobj->targets[] = $newtarget;
                             }
                         }

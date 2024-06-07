@@ -370,8 +370,9 @@ function wm_parse_string($input)
         // If, at this point, we are not within a phrase, the prepared phrase is complete and can be added to the array
         if (($cPhraseQuote === null) && ($sPhrase != null))
         {
-            $output[] = $sPhrase;
-            $sPhrase = null;
+	    // Remove escape backslashes from phrase
+	    $output[] = preg_replace('/\\\([' . $sQuotes .' ])/', "$1", $sPhrase);
+	    $sPhrase = null;
         }
     }
     while ($sToken !== false);      // Stop when we receive FALSE from strtok()
