@@ -623,7 +623,7 @@ class WeatherMap extends WeatherMapBase
 
                 if (($type == 'link') || ($type == 'node')) {
 		    wm_debug("ProcessString: working on args ".$args."\n");
-                    if (preg_match("/([^:]+):([^:]+):*([^:]*)/", $args, $matches)) {
+                    if (preg_match("/([^:]+):([^:]+):*(.*)/", $args, $matches)) {
                         $itemname = $matches[1];
                         $args = $matches[2];
                         $format = $matches[3];
@@ -710,9 +710,14 @@ class WeatherMap extends WeatherMapBase
 				$value = strtolower($value);
 				wm_debug("Value changed to: $value by function: $f\n");
 				break;
-			    case (preg_match('/^\/([^\/]|\\/)+\/([^\/]|\\/)*\//', $f, $match) ? true : false) :
-				$value = preg_replace('/'.preg_quote($match[1], '/').'/', $match[2], $value);
-				wm_debug("Value changed to: $value by function: $f\n");
+			    default :
+				$match = preg_split('~(?<!\\\\)/~', $f, -1, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+				if (isset($match[0]) && 
+				    isset($match[1]) ) {
+				    wm_debug("Detected regular expression: $match[0], replacement string: $match[1]\n");
+				    $value = preg_replace('/' . $match[0] . '/', $match[1], $value);
+				    wm_debug("Value changed to: $value by function: $f\n");
+				}
 				break;
 			}
 		    }
